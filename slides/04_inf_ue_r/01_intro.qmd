@@ -1,0 +1,66 @@
+---
+title: "01 - Updating R & RStudio"
+subtitle: "Auswertung Emprischer Daten"
+author: "Prof. Dr. David F. Urschler"
+format: 
+  revealjs:
+    slide-number: true
+    show-notes: false
+self-contained: true
+---
+
+## Ist R und RStudio noch aktuell?
+
+R und R Studio werden regelmäßig aktualisiert!
+
+
+
+## Ist R und RStudio noch aktuell?
+
+Wie finden wir heraus, ob
+<br><br>
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](https://www.r-project.org/logo/Rlogo.png){fig-alt="R logo" width="3.8cm" height="3cm"}
+:::
+
+::: {.column width="50%"}
+![](https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo.png){fig-alt="R logo"   height="3cm"}
+:::
+
+::::
+
+<br>
+noch aktuell sind?  
+
+
+## Ist R und RStudio noch aktuell?
+
+### R
+
+Hierfür nutzen wir die `sessionInfo()-Funktion`
+<br><br>
+```{r eval=FALSE, echo=TRUE}
+sessionInfo()
+```
+
+## Ist R und RStudio noch aktuell?
+### R
+
+Hierfür nutzen wir die `sessionInfo()-Funktion`
+<br><br>
+```{r eval=TRUE, echo=FALSE}
+sessionInfo()
+```
+
+## Ist R und RStudio noch aktuell?
+### R
+#### Meine R Version < 4.2.2 ist?
+  
+<br>Wenn ...
+
+- 4.2.1 -> kein Problem
+- 4.1.x -> Probleme sind vorprogrammiert
+- 3.x.x -> waren Sie im Kurs?
