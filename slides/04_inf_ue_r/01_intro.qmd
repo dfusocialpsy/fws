@@ -5,62 +5,125 @@ author: "Prof. Dr. David F. Urschler"
 format: 
   revealjs:
     slide-number: true
+    smaller: true
     show-notes: false
-self-contained: true
+    embed-resources: true
+    theme: simple
 ---
 
 ## Ist R und RStudio noch aktuell?
 
-R und R Studio werden regelmäßig aktualisiert!
-
-
+<br><br>R und R Studio werden regelmäßig aktualisiert!
 
 ## Ist R und RStudio noch aktuell?
 
-Wie finden wir heraus, ob
-<br><br>
+Wie finden wir heraus, ob <br><br>
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="50%"}
 ![](https://www.r-project.org/logo/Rlogo.png){fig-alt="R logo" width="3.8cm" height="3cm"}
 :::
 
 ::: {.column width="50%"}
-![](https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo.png){fig-alt="R logo"   height="3cm"}
+![](https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo.png){fig-alt="R logo" height="3cm"}
+:::
 :::
 
-::::
-
-<br>
-noch aktuell sind?  
-
+<br> noch aktuell sind?
 
 ## Ist R und RStudio noch aktuell?
 
 ### R
 
-Hierfür nutzen wir die `sessionInfo()-Funktion`
-<br><br>
-```{r eval=FALSE, echo=TRUE}
+Hierfür nutzen wir die `sessionInfo()-Funktion` <br><br>
+
+```{r}
+#| eval: false
+#| echo: true
 sessionInfo()
 ```
 
 ## Ist R und RStudio noch aktuell?
+
 ### R
 
-Hierfür nutzen wir die `sessionInfo()-Funktion`
-<br><br>
-```{r eval=TRUE, echo=FALSE}
+Hierfür nutzen wir die `sessionInfo()-Funktion` <br><br>
+
+```{r}
+#| eval: true
+#| echo: false
 sessionInfo()
 ```
 
 ## Ist R und RStudio noch aktuell?
+
 ### R
-#### Meine R Version < 4.2.2 ist?
-  
+
+#### Meine R Version \< 4.2.2 ist?
+
 <br>Wenn ...
 
-- 4.2.1 -> kein Problem
-- 4.1.x -> Probleme sind vorprogrammiert
-- 3.x.x -> waren Sie im Kurs?
+-   4.2.1 ➞ kein Problem
+-   4.1.x ➞ Probleme sind vorprogrammiert
+-   3.x.x ➞ waren Sie im Kurs?
+
+## Ist R und RStudio noch aktuell?
+
+### R
+
+#### Meine R Version \< 4.2.2 ist?
+
+Mac ➞ einfach R [herunterladen](https://cran.r-project.org/bin/macosx/) und installieren
+
+. . .
+
+<br>Windows ➞ macht etwas mehr Mühe
+
+## Ist R und RStudio noch aktuell?
+
+### R
+
+#### Meine R Version \< 4.2.2 ist?
+
+Windows ➞ `installr()-Package` <br><br>
+
+```{r update_01}
+#| eval: false
+#| echo: true
+
+
+# Installieren des Packages
+install.packages("intallr")
+
+# Nutzen der upddteR()-Funktion
+installr::updateR()
+```
+
+<br>Danach folgen Sie einfach den Anweisungen. 
+
+::: aside
+Zusätziche Informationen finden Sie [hier](https://www.r-statistics.com/2013/03/updating-r-from-r-on-windows-using-the-installr-package/).
+:::
+
+
+## Ist R und RStudio noch aktuell?
+
+### RStudio
+
+Wenn Sie nach RStudio suchen, werden Sie eine Überraschung erleben.
+
+![](https://cdn.pixabay.com/photo/2018/04/06/14/04/maki-3295891_960_720.jpg){fig-alt="surprise" fig-align="center" width="6.4cm" height="5cm"}
+
+[~~RStudio~~](https://www.rstudio.com) ➞ posit
+
+:::aside
+Sollten Sie die Gründe interessieren - [hier](https://www.r-bloggers.com/2022/07/posit-why-rstudio-is-changing-its-name/) erfahren Sie mehr.
+:::
+
+## Fragen
+
+
+
+![](images/questionmark-01.png){fig-align="center"}
+
+
