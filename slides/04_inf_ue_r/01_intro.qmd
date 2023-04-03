@@ -9,8 +9,6 @@ format:
     show-notes: false
     embed-resources: true
     theme: simple
-  
-    
 ---
 
 ## Ist R und RStudio noch aktuell?
