@@ -99,12 +99,11 @@ install.packages("intallr")
 installr::updateR()
 ```
 
-<br>Danach folgen Sie einfach den Anweisungen. 
+<br>Danach folgen Sie einfach den Anweisungen.
 
 ::: aside
 Zusätziche Informationen finden Sie [hier](https://www.r-statistics.com/2013/03/updating-r-from-r-on-windows-using-the-installr-package/).
 :::
-
 
 ## Ist R und RStudio noch aktuell?
 
@@ -116,14 +115,10 @@ Wenn Sie nach RStudio suchen, werden Sie eine Überraschung erleben.
 
 [~~RStudio~~](https://www.rstudio.com) ➞ posit
 
-:::aside
+::: aside
 Sollten Sie die Gründe interessieren - [hier](https://www.r-bloggers.com/2022/07/posit-why-rstudio-is-changing-its-name/) erfahren Sie mehr.
 :::
 
 ## Fragen
 
-
-
 ![](images/questionmark-01.png){fig-align="center"}
-
-
