@@ -1,0 +1,14 @@
+---
+title: "02 - Quarto"
+subtitle: "Auswertung Emprischer Daten"
+author: "Prof. Dr. David F. Urschler"
+format: 
+  revealjs:
+    slide-number: true
+    smaller: true
+    show-notes: false
+    embed-resources: true
+    theme: simple
+---
+
+## Warum ![](https://quarto.org/quarto.png)
