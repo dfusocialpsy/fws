@@ -1,5 +1,5 @@
 ---
-title: "03 - T-Test"
+title: "03 - *t*-Tests"
 subtitle: "Auswertung Emprischer Daten"
 author: "Prof. Dr. David F. Urschler"
 format: 
@@ -10,3 +10,17 @@ format:
     embed-resources: true
     theme: simple
 ---
+
+
+## Welche *t*-Tests kennen wir?
+
+::: {.incremental}
+- Einstichproben *t*-Test
+
+- *t*-Test für *unab*hängige Stichproben
+
+- *t*-Test für *ab*hängige Stichproben
+:::
+
+Welche Fragen können wir mit *t*-Tests beantworten?
+
