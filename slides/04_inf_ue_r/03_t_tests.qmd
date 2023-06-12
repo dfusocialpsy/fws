@@ -9,18 +9,838 @@ format:
     show-notes: false
     embed-resources: true
     theme: simple
+    code-link: true
+    code-fold: true
+    code-summary: "Zeig mir den Code"
+execute: 
+  warning: false
 ---
 
+```{r setup}
+library(here)
+library(tidyverse)
+library(effectsize)
+```
 
 ## Welche *t*-Tests kennen wir?
 
-::: {.incremental}
-- Einstichproben *t*-Test
+::: incremental
+-   Einstichproben *t*-Test
 
-- *t*-Test für *unab*hängige Stichproben
+-   *t*-Test für *unab*hängige Stichproben
 
-- *t*-Test für *ab*hängige Stichproben
+-   *t*-Test für *ab*hängige Stichproben
 :::
 
-Welche Fragen können wir mit *t*-Tests beantworten?
+## Einstichproben *t*-Test
 
+### Welche Fragen können wir beantworten?
+
+::: incremental
+-   Haben Menschen Präferenzen für bestimmte Schauspieler\*innen?
+
+-   Ist unsere Gruppe intelligenter als der Durchschnitt?
+
+-   Suchen Menschen ausgewogen nach Informationen?
+
+-   ...
+:::
+
+## Einstichproben *t*-Test
+
+### Vorgehensweise
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Haben Menschen eine Präferenz für einen Batman-Darsteller?
+
+::: columns
+::: {.column width="50%"}
+![](https://images-cdn.bridgemanimages.com/api/1.0/image/600wm.MEP.17469740.7055475/4793292.jpg){height="10cm"}
+:::
+
+::: {.column width="50%"}
+![](https://cdn.prod.www.spiegel.de/images/a1d045a6-0001-0004-0000-000000781208_w1200_r1_fpx65.84_fpy54.96.jpg){height="10cm"}
+:::
+:::
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+Informationen zum Datensatz `ae_t_test_one.csv`
+
+-   demographische Daten (id, age & gen: 1 = weiblich, 2 = männlich)
+-   Vorläufige Entscheidung (prel_dec: 0 = "Christian Bale", 1 = "Adam West")
+-   Angaben ob ein Artikel gelesen werden möchte(... \_watch: 0 = nein, 1 = ja)
+-   Finale Entscheidung (prel_dec: 0 = "Christian Bale", 1 = "Adam West")
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+
+style A fill: #009e73
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Daten einlesen
+
+```{r load data_for_me}
+#| echo: false
+
+# I need this path, because my set-up looks like this
+# The generic part for students can be found below
+ds <- read.csv(here::here("data/ae_t_test_one.csv"),
+               header = TRUE)
+
+```
+
+```{r load data}
+#| eval: false
+#| echo: true
+
+
+ds <- read.csv(here::here("ae_t_test_one.csv"),
+               header = TRUE)
+
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+
+style B fill: #009e73
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Übersicht verschaffen
+
+```{r uebersicht}
+#| echo: true
+names(ds)
+
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+
+style D fill: #009e73
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Ergeben die Daten Sinn?
+
+```{r sinn}
+#| echo: true
+#| output: false
+ds |> 
+  select(contains("watch")) |> 
+  summary()
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+
+style E fill: #009e73
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+Gender-Variable als Faktor-Variable
+
+```{r gen}
+#| echo: true
+#| output: false
+ds$gen_f <- factor(ds$gen,
+                   levels = c(1, 2),
+                   labels = c("w", "m"))
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+Welche Szenen werden *entsprechend* der ursprünglichen Wahl gewählt?
+
+```{r supp}
+#| echo: true
+#| output: false
+ds$watch_sup_sum <- ifelse(ds$prel_dec == 1, 
+                          rowSums(ds[c("a01_watch",
+                                       "a03_watch",
+                                       "a05_watch",
+                                       "a07_watch",
+                                       "a09_watch",
+                                       "a11_watch")],
+                                  na.rm = TRUE),
+                          rowSums(ds[c("a02_watch",
+                                       "a04_watch",
+                                       "a06_watch",
+                                       "a08_watch",
+                                       "a10_watch",
+                                       "a12_watch")],
+                                  na.rm = TRUE))
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+Welche Szenen werden *entgegen* der ursprünglichen Wahl gewählt?
+
+```{r con}
+#| echo: true
+#| output: false
+ds$watch_con_sum <- ifelse(ds$prel_dec == 0, 
+                          rowSums(ds[c("a01_watch",
+                                       "a03_watch",
+                                       "a05_watch",
+                                       "a07_watch",
+                                       "a09_watch",
+                                       "a11_watch")],
+                                  na.rm = TRUE),
+                          rowSums(ds[c("a02_watch",
+                                       "a04_watch",
+                                       "a06_watch",
+                                       "a08_watch",
+                                       "a10_watch",
+                                       "a12_watch")],
+                                  na.rm = TRUE))
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+Würden die Menschen mehr Szenen sehen wollen, die mit Ihrer Präferenz übereinstimmen?
+
+```{r bias}
+#| echo: true
+#| output: false
+ds$watch_bias <- ds$watch_sup_sum - ds$watch_con_sum
+
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+
+style F fill: #009e73
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Einstichproben-*t*--Test berechnen
+
+Voraussetzungen
+
+-   metrisches Skalenniveau
+-   "normalverteilte" Daten
+-   keine Ausreißer
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Einstichproben-*t*-Test berechnen
+
+normalverteilte Daten - grafisch
+
+```{r ng}
+#| echo: true
+#| output: false
+hist(ds$watch_bias)
+
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Einstichproben-*t*--Test berechnen
+
+normalverteilte Daten - statistisch
+
+-   Kolmogorov-Smirnov-Test
+-   Shapiro-Wilk-Test
+
+```{r ns}
+#| echo: true
+#| output: false
+
+# Kolmogorov-Smirnov-Test
+ks.test(ds$watch_bias, 
+        "pnorm",
+        mean = mean(ds$watch_bias, 
+                    na.rm = TRUE),
+        sd = sd(ds$watch_bias, 
+                na.rm = TRUE))
+
+# Shapiro-Wilk-Test
+shapiro.test(ds$watch_bias)
+
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Einstichproben-*t*-Test berechnen
+
+normalverteilte Daten - Ergänzung
+
+-   zu wenig Power bei kleinen Stichproben -\> Shapiro-Wilk-Test hat mehr Power<br>
+-   bei größeren Stichproben werden beide Tests fast immer signifikant, obwohl die Daten normalverteilt sind<br>
+-   *t*-Tests sind robust gegen diese Vereletzung -\> zentrales Grenzwerttheorem
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Einstichproben-*t*--Test berechnen
+
+```{r ost}
+#| echo: true
+#| output: false
+
+# Test durchführen
+t.test(ds$watch_bias,
+       mu = 0)
+
+# Effektgröße berechnen
+effectsize::cohens_d(t.test(ds$watch_bias,
+       mu = 0))
+
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(Einstichproben-t-Test) --> 
+G(Ergebnis berichten)
+
+style G fill: #009e73
+```
+
+## Einstichproben *t*-Test
+
+### Beispiel
+
+#### Ergebnis APA-konfrom berichten
+
+„Ein Einstichproben *t*-Test wurde durchgeführt um zu testen, ob die Präfrenz der Batmandarsteller sich signifikant vom null (μ = 0) unterscheidet. Die Ergebnisse zeigen, einen signifikanten Unterschied zu null, *t*(69) = 2.59, *p* = .012, *d* = 0.31, 95% CI \[0.07, 0.55\]. Im Durchschnitt wählten die Versuchspersonen mehr Szenen (*M* = 0.47, *SD* = 1.52) , die mit ihrer vorläufigen Entscheidung übereinstimmen."
+
+
+
+
+<!-- Inddepentend t-Test slights start here -->
+
+
+
+## *t*-Test für unabhängige Stichproben
+### Welche Fragen können wir beantworten?
+#### Über die Psychologie hinaus
+
+::: incremental
+-   Führt der Konsum von alkholfreien Getränken zu einem Rauschzustand?
+
+-   Produziert einen Fertigunglinie weniger als eine andere?
+
+-   Hilft ein bestimmtes Medikament den Blutdruck zu senken?
+
+-   Haben Globoli einen "Nuzten"?
+
+-   ...
+:::
+
+
+## *t*-Test für unabhängige Stichproben
+### Welche Fragen können wir beantworten?
+#### In der Psychologie 
+
+::: incremental
+-   Führt Weihnachtsdekoration dazu, dass Menschen sich ausgeschlossen fühlen?
+
+-   Kann schlechter Humor die Leistung von Studierende steigern?
+
+-   Führt der Konsum von THC eher zur Psychose als jener von CBD?
+
+-   Reduziert ein Training die Stresssymptomatik?
+
+-   ...
+:::
+
+
+## *t*-Test für unabhängige Stichproben
+### Vorgehensweise
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+```
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+
+Hat die Social-Media-Plattformen einen Einfluss darauf, wie sehr die Inhalte "geliked" werden?
+
+::: columns
+::: {.column width="50%"}
+![](https://cdn.pixabay.com/photo/2021/01/30/06/42/tiktok-5962992_960_720.png){height="10cm"}
+:::
+
+::: {.column width="50%"}
+![](https://www.pngplay.com/wp-content/uploads/12/Twitch-Logo-PNG-Free-File-Download.png){height="10cm"}
+:::
+:::
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+
+Informationen zum Datensatz `ae_t_test_ind.csv`
+
+-   demographische Daten (id, age & gen: 1 = weiblich, 2 = männlich)
+-   Social-Media-Plattform (smp: 0 = "TikTok", 1 = "Twitch")
+-   Bewertung der Inhalte über zehn Items (1 = trifft nicht zu, 7 = trifft voll zu)
+
+
+
+## *t*-Test für unabhängige Stichproben
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+
+style A fill: #009e73
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### Daten einlesen
+
+```{r}
+#| echo: false
+
+# I need this path, because my set-up looks like this
+# The generic part for students can be found below
+ds <- read.csv(here::here("data/ae_t_test_ind.csv"),
+               header = TRUE)
+
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+
+ds <- read.csv(here::here("ae_t_test_ind.csv"),
+               header = TRUE)
+
+```
+
+## *t*-Test für unabhängige Stichproben
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+
+style B fill: #009e73
+```
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### Übersicht verschaffen
+
+```{r}
+#| echo: true
+names(ds)
+
+```
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+
+style D fill: #009e73
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### Ergeben die Daten Sinn?
+
+```{r}
+#| echo: true
+#| output: false
+ds |> 
+  select(starts_with("rp")) |> 
+  summary()
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+
+style E fill: #009e73
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### Skalenwerte berechnen
+
+Gender-Variable als Faktor-Variable
+
+```{r}
+#| echo: true
+#| output: false
+ds$gen_f <- factor(ds$gen,
+                   levels = c(1, 2),
+                   labels = c("w", "m"))
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### Skalenwerte berechnen
+
+Social-Media-Variable als Faktor-Variable
+
+```{r}
+#| echo: true
+#| output: false
+ds$smp_f <- factor(ds$smp,
+                   levels = c(0, 1),
+                   labels = c("Tik_Tok", "Twitch"))
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### Skalenwerte berechnen
+
+Wie wird der Inhalt bewertet?
+
+```{r}
+#| echo: true
+#| output: false
+ds$bw_mean <- rowMeans(ds[c("rp01",
+                            "rp02",
+                            "rp03",
+                            "rp04",
+                            "rp05",
+                            "rp06",
+                            "rp07",
+                            "rp08",
+                            "rp09",
+                            "rp10")],
+                       na.rm = TRUE)
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+
+style F fill: #009e73
+```
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### *t*-Test für unabhängige Stichproben berechnen
+
+Voraussetzungen
+
+-   Stichproben müssen unabähnig sein
+-   metrisches Skalenniveau der AV
+-   "normalverteilte" Daten
+-   Varianzhomogenität
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### *t*-Test für unabhängige Stichproben berechnen
+
+normalverteilte Daten - grafisch
+
+```{r}
+#| echo: true
+#| output: false
+hist(ds$bw_mean)
+
+```
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### *t*-Test für unabhängige Stichproben berechnen
+
+normalverteilte Daten - statistisch
+
+-   Kolmogorov-Smirnov-Test
+-   Shapiro-Wilk-Test
+
+```{r}
+#| echo: true
+#| output: false
+
+# Kolmogorov-Smirnov-Test
+ks.test(ds$bw_mean, 
+        "pnorm",
+        mean = mean(ds$bw_mean, 
+                    na.rm = TRUE),
+        sd = sd(ds$bw_mean, 
+                na.rm = TRUE))
+
+# Shapiro-Wilk-Test
+shapiro.test(ds$bw_mean)
+
+```
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### *t*-Test für unabhängige Stichproben berechnen
+
+Varianzhomogenität
+
+- Levene-Test
+
+```{r}
+#| echo: true
+#| output: false
+car::leveneTest(bw_mean ~ smp_f,
+                data = ds)
+```
+
+
+## *t*-Test für unabhängige Stichproben
+### Beispiel
+#### *t*-Test für unabhängige Stichproben berechnen
+
+```{r}
+#| echo: true
+#| output: false
+
+# Test durchführen
+t.test(bw_mean ~ smp_f,
+       var.equal = TRUE,
+       data = ds)
+
+# Effektgröße berechnen
+effectsize::cohens_d(bw_mean ~ smp_f,
+                     var.equal = TRUE,
+                     data = ds)
+
+```
+
+## *t*-Test für unabhängige Stichproben
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(*t*-Test für unabhängige Stichproben) --> 
+G(Ergebnis berichten)
+
+style G fill: #009e73
+```
+
+## *t*-Test für unabhängige Stichproben
+
+### Beispiel
+
+#### Ergebnis APA-konfrom berichten
+
+„Ein *t*-Test für unabhängie Sichproben wurde durchgeführt um zu testen, ob die Wahl der Social-Media-Plattform eine Auswikrung auf die Wahrnehmung des Inhalts hat. Die Ergebnisse zeigen, dass die Versuchspersonen die Inhalte auf Twitch (*M* = 5.24, *SD* = 0.72) besser als auf Tik Tok (*M* = 4.26, *SD* = 0.64) bewerten, *t*(22) = 3.53, *p* = .002, *d* = 1.44, 95% CI \[2.33, 0.52\].

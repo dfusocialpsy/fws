@@ -1,0 +1,61 @@
+---
+title: "04 - Plotting"
+subtitle: "Auswertung Emprischer Daten"
+author: "Prof. Dr. David F. Urschler"
+format: 
+  revealjs:
+    slide-number: true
+    smaller: true
+    show-notes: false
+    embed-resources: true
+    theme: simple
+    code-link: false
+    code-fold: false
+    code-summary: "Zeig mir den Code"
+    code-copy: false
+    code-annotations: below
+execute: 
+  warning: false
+---
+
+## Vorgehen
+
+```{mermaid}
+
+flowchart TB
+A(Daten einlesen) --> B(Übersicht verschaffen) --> C(Namen brauchbar machen) --> D(Ergeben die Daten Sinn?) --> E(Skalenwerte berechnen) --> F(...) --> G(Berichten der Ergebnisse)
+
+style G fill: #009e73
+
+```
+
+## Wie können wir Daten präsentieren?
+
+::: incremental
+-   Urliste
+
+-   Tabellen
+
+-   Statistische Kennwerte
+
+-   **grafisch**
+:::
+
+## Wie können wir Daten präsentieren?
+### `ggplot2-Package`
+<br>‚
+<br>
+
+![](https://ggplot2.tidyverse.org/logo.png){fig-align="center" height="10cm"}
+
+
+
+
+## ...
+
+```{r}
+#| echo: true
+1 + 1 # <1>
+```
+
+1.  count 1 + 1
