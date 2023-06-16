@@ -12,11 +12,15 @@ format:
     code-link: false
     code-fold: false
     code-summary: "Zeig mir den Code"
-    code-copy: false
-    code-annotations: below
 execute: 
   warning: false
 ---
+
+```{r}
+library(patchwork)
+library(tidyverse)
+
+```
 
 ## Vorgehen
 
@@ -42,20 +46,582 @@ style G fill: #009e73
 :::
 
 ## Wie können wir Daten präsentieren?
+
 ### `ggplot2-Package`
-<br>‚
-<br>
+
+<br> <br>
 
 ![](https://ggplot2.tidyverse.org/logo.png){fig-align="center" height="10cm"}
 
+## `ggplot2-Package`
 
+### Beispiele
 
+::: columns
+::: {.column width="50%"}
+![](https://albert-rapp.de/posts/ggplot2-tips/07_four_ways_colors_more_efficiently/07_four_ways_colors_more_efficiently_files/figure-html/unnamed-chunk-15-1.png){height="10cm"}
+:::
 
-## ...
+::: {.column width="50%"}
+![](https://albert-rapp.de/posts/ggplot2-tips/05_ggforce_examples/05_ggforce_examples_files/figure-html/unnamed-chunk-5-1.png){height="10cm"}
+:::
+:::
+
+Ⓒ [Albert Rapp](https://albert-rapp.de/)
+
+## `ggplot2-Package`
+
+### Beispiele
+
+::: columns
+::: {.column width="40%"}
+![](https://github.com/gkaramanis/tidytuesday/raw/master/2023/2023-week_05/plots/cats_uk.png){height="10cm"}
+:::
+
+::: {.column width="60%"}
+![](https://github.com/gkaramanis/mappromptmonday/raw/master/2023/2023-week_06/plots/climate.png){height="10cm"}
+:::
+:::
+
+Ⓒ [Georgios Karamanis](https://karaman.is/)
+
+## `ggplot2-Package`
+
+### Beispiele
+
+::: columns
+::: {.column width="50%"}
+![](https://tanyaviz.com/blog/bump-chart/epl-bump-chart.jpeg){height="10cm"}
+:::
+
+::: {.column width="50%"}
+![](https://tanyaviz.com/blog/super-radar-plots/index_files/figure-html/fig-avengers-1.png){height="10cm" fig-align="center"}
+:::
+:::
+
+Ⓒ [Tanya Shapiro](https://tanyaviz.com/)
+
+## `ggplot2-Package`
+
+### Beispiele
+
+-   [Grammer of graphic](https://vita.had.co.nz/papers/layered-grammar.pdf)
+
+## `ggplot2-Package`
+
+### Ressourcen
+
+-   [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/)
+
+-   [Data Visualization A practical introduction](http://vissoc.co/index.html#preface)
+
+-   [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/?fbclid=IwAR0dfaQywcCtZL6tKvMRmQXCSDAPR5rrFmhzz7Tz5d1Hi3PQ99DHgPKEOZo)
+
+-   [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/)
+
+```{=html}
+<!--
+  Here starts the basic idea
+-->
+```
+## `ggplot2-Package`
+
+### Grundidee
+
+1.  Wir erstellen eine "Leinwand"
+2.  Auf der "Leinwand" werden Daten dargestellt
+3.  Daten können unterschiedlich dargestellt werden - welch Überraschung!
+4.  Die Darstellung erfolgt in "Schichten"
+5.  Feinjustierung
+
+## `ggplot2-Package`
+
+### Grundidee
+
+1.  Erstellen einer "Leinwand"
+
+`ggplot()-Funktion`
 
 ```{r}
 #| echo: true
-1 + 1 # <1>
+#| fig-align: center
+ggplot()
 ```
 
-1.  count 1 + 1
+## `ggplot2-Package`
+
+### Grundidee
+
+2.  Darstellen von Daten
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg) # Welcher Datensatz soll dargestellt werden?
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+2.  Darstellen von Daten
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg,   
+       aes(x = class,  # Daten die auf der X-Achse dargestellt werden
+           y = hwy))   # Daten die auf der Y-Achse dargestellt werden
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+3.  Unterschiedliche Darstellung der Daten
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg,   
+       aes(x = class,
+           y = hwy)) + # "+" bedeuetet, dass zur Leinwand ewtas hinzugefügt werden soll
+  geom_point()         # Jeder Messwert wird als Punkt dargestellt
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+3.  Unterschiedliche Darstellung der Daten
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg,   
+       aes(x = class,
+           y = hwy)) + 
+  geom_col()           # Die absoluten Summenhäufigkeiten werden dargestellt
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+3.  Unterschiedliche Darstellung der Daten
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg,   
+       aes(x = class,
+           y = hwy)) + 
+  geom_boxplot() # Die Boxplots werden dargestellt
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+4.  Darstellen in "Schichten"
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg,   
+       aes(x = class,  
+           y = hwy)) +
+  geom_boxplot() + # Zunächst wird der Boxplot erstellt
+  geom_jitter()    # Über dem Boxplot werden die einzelnen Messwerte noch als Punkte dargestellt
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+4.  Darstellen in "Schichten"
+
+```{r}
+#| echo: true
+#| fig-align: center
+ggplot(data = mpg,   
+       aes(x = class,  
+           y = hwy)) +
+  geom_jitter() +   # Zunächst werden die einzelnen Messwerte als Punkte dargestellt
+  geom_boxplot()    # Über den Punkten werden die Boxplots erstellt
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+5.  Feinjustierung
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggplot(data = mpg,   
+               aes(x = class,  
+                   y = hwy)) +
+  geom_jitter() 
+```
+
+## `ggplot2-Package`
+
+### Grundidee
+
+5.  Feinjustierung
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggthemr::ggthemr("fresh")
+
+ggplot(data = mpg,   
+               aes(x = class,  
+                   y = hwy)) +
+  geom_hline(yintercept = mean(mpg$hwy)) +
+  geom_curve(aes(x = "minivan",
+                 y = 47,
+                 xend = 5.3,
+                 yend = mean(hwy)),
+             ncp = 1000,
+             arrow = arrow(ends = "last"),
+             curvature = -0.45) +
+  geom_jitter(aes(color = class),
+              alpha = 0.7,
+              show.legend = FALSE)  +
+  annotate("text",
+           x = 3.2,
+           y = 47,
+           label = "durchschnittlicher Verbrauch") +
+  labs(title = "Welche Klasse verbraucht am meisten Treibstoff?",
+       x = "Klasse",
+       y = "Verbrauch in Gallonen pro Meile") +
+  scale_y_continuous(limits = c(0, 50)) 
+ 
+
+
+```
+
+```{=html}
+<!--
+  Here starts an ugly example
+-->
+```
+
+## `ggplot2-Package`
+
+### Was brauchen wir?
+
+-  **Data**
+-  **Aes**thetic mappings, um Daten zu übertragen
+-  **Geom**etrische Objekte, die wir sehen wollen
+-  **Stat**istics, um Daten die wir visualisieren wollen
+-  **Coord**inates, um unseren Plot auszurichten
+-  **Scal**es, um zu zeigen welche Werte wir plotten
+-  **Facet**s, um den den Plot in kleinere aufzuteilen
+
+::: fragment
+HILFE!
+:::
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+**Data** - "aufgeräumte" Daten
+
+<br>
+
+::: columns
+::: {.column width="50%"}
+```{r}
+nt <- data.frame(Land = c("D", "A", "CH"),
+                 Jung = c(100, 200, 300),
+                 Alt = c(110, 220, 320))
+
+knitr::kable(nt,
+             caption = "*\"untidy\"*") 
+```
+:::
+
+::: {.column .center width="50%"}
+```{r}
+ti <- data.frame(Land = c("D", "A", "CH"),
+                 Jung = c(100, 200, 300),
+                 Alt = c(110, 220, 320))
+ti |> 
+  pivot_longer(-Land,
+               names_to = "Alter",
+               values_to = "Ausgaben") -> ti
+
+knitr::kable(ti,
+             caption = "*\"tidy\"*") 
+
+# Rename ti to ds so that the students and I don't get confused
+ds <- ti
+```
+:::
+:::
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+**Aes**thetic mappings
+
+Wir müssen unsere Daten in visuelle Elemente übertragen.
+
+-   Ausgaben
+-   Alter
+-   Land
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+**Aes**thetic mappings
+
+Wir müssen unsere Daten in visuelle Elemente übertragen. 
+<br><br>
+Beispielsweise
+
+-   Aausgaben ➜ **y**-Achse
+-   Alter ➜ **x**-Achse
+-   Land ➜ *Form*, *Farbe*, *etc.*
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+**Geom**etrische Objekte
+
+Welche geometrischen Objekte sollen dargestellt werden?
+
+![](https://pkg.garrickadenbuie.com/gentle-ggplot2/index_files/figure-html/geom_demo-1.png){fig-align="center"}
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+Unser erster Plot - hurra
+
+```{r}
+#| echo: true
+ggplot(ds)
+```
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+
+```{r}
+# If I don't reset the theme, we allways see the nice "freh"-Theme
+ggplot2::theme_set(theme_grey())
+```
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben)
+```
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben) +
+  geom_point()
+```
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben,
+      color = Land) +
+  geom_point() 
+```
+
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+Unser erster Plot
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben,
+      color = Land) +
+  geom_point() +
+  geom_line(aes(group = Land))
+```
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+**Facet**s
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben,
+      color = Land) +
+  geom_point() +
+  geom_line(aes(group = Land)) +
+  facet_wrap(~ Land)
+
+```
+
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+**Coord**inates
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben,
+      color = Land) +
+  geom_point() +
+  geom_line(aes(group = Land)) +
+  coord_flip()
+
+```
+
+## `ggplot2-Package`
+### Was brauchen wir? - ein Beispiel
+
+Geht das auch in schön(er)?
+
+```{r}
+#| echo: true
+ggplot(ds) +
+  aes(x = Alter,
+      y = Ausgaben,
+      color = Land) +
+  geom_point() +
+  geom_line(aes(group = Land)) +
+  theme_bw()
+
+```
+
+
+## Übung
+### `gapminder-Package`
+
+<br> <br>
+
+::: columns
+::: {.column width="50%"}
+![](https://m.media-amazon.com/images/I/71nasEx5zRL._AC_UF894,1000_QL80_.jpg){fig-align="center" height="10cm" }
+:::
+
+::: {.column width="50%"}
+![](https://s3.eu-west-1.amazonaws.com/static.gapminder.org/GapminderMedia/wp-uploads/20220816130014/countries_health_wealth_2021-medium-01-2-1024x671.png){height="10cm"}
+:::
+:::
+
+
+## Übung
+### `gapminder-Package`
+<br> <br>
+
+```{r}
+# install.packages("gapminder")
+library(gapminder)
+
+knitr::kable(head(gapminder))
+```
+
+## Übung
+### Entwicklung der Lebenserwartung 
+
+Wie hat sich die Lebenserwartung in Afghanistan im Vergleich zu Albanien entwickelt? 
+
+Erstellen Sie einen Plot der ...
+
+- die Entwicklung der Lebenserwartung anzeigt
+- die Lebenserwartung sollen als Punkte angezeigt werden
+- die Größe der Punkte soll der Population entsprichen
+- das Design soll jenem des [Wall-Street-Journals](https://www.wsj.com/) entsprechen
+
+Tipp: Nutzen Sie das für das design das `ggthemes-Package`
+
+
+
+## Übung
+### Entwicklung der Lebenserwartung 
+
+So soll Ihr Plot aussehen
+
+<br> <br> 
+
+```{r}
+#| fig-align: center
+gapminder |> 
+  filter(country == c("Afghanistan", "Albania")) |> 
+  ggplot(aes(x = year,
+             y = lifeExp,
+             color = country)) +
+  geom_point(aes(size = pop),
+             show.legend = FALSE) +
+  geom_line() +
+  scale_x_continuous(limits = c(1950, 2010),
+                     n.breaks = 10) + 
+  scale_y_continuous(limits = c(0, 80)) +
+  labs(title = "Lebenserwartung",
+       x = "Jahr",
+       y = "Lebenserwartung") +
+  ggthemes::theme_wsj(color = "gray") +
+  theme(legend.title=element_blank())
+```
+
+## Übung
+### Entwicklung der Lebenserwartung 
+
+Lösung
+
+
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: true
+gapminder |> 
+  filter(country == c("Afghanistan", "Albania")) |> 
+  ggplot(aes(x = year,
+             y = lifeExp,
+             color = country)) +
+  geom_point(aes(size = pop),
+             show.legend = FALSE) +
+  geom_line() +
+  scale_x_continuous(limits = c(1950, 2010),
+                     n.breaks = 10) + 
+  scale_y_continuous(limits = c(0, 80)) +
+  labs(title = "Lebenserwartung",
+       x = "Jahr",
+       y = "Lebenserwartung") +
+  ggthemes::theme_wsj(color = "gray") +
+  theme(legend.title=element_blank())
+```
