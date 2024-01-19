@@ -1,0 +1,791 @@
+---
+title: "05 - ANOVA"
+subtitle: "Auswertung Emprischer Daten"
+author: "Prof. Dr. David F. Urschler"
+format: 
+  revealjs:
+    slide-number: true
+    smaller: true
+    show-notes: false
+    embed-resources: true
+    theme: simple
+    code-link: true
+    code-fold: true
+    code-summary: "Zeig mir den Code"
+execute: 
+  warning: false
+---
+
+```{r setup}
+library(here)
+library(tidyverse)
+library(effectsize)
+```
+
+## Welche ANOVAs kennen wir?
+
+::: incremental
+-   einfaktorielle ANOVA
+
+-   mehrfaktorielle ANOVA
+
+-   einfaktorielle ANOVA mit Messwiederholung
+
+-   mehrfakotirelle ANOVA mit Messwiederholung
+:::
+
+<!-- One Way ANOVA slights start here -->
+
+## einfaktorielle ANOVA
+
+### Welche Fragen können wir beantworten?
+
+#### Über die Psychologie hinaus
+
+::: incremental
+-   Sind unterschiedliche Produktionslinien unterschiedlich produktiv?
+
+-   Gibt es Unterschiede in der Pünktlichkeit von Flügen in der EU?
+
+-   Haben Menschen Präferenzen für einen bestimmten Humor?
+
+-   ...
+:::
+
+## einfaktorielle ANOVA
+
+### Welche Fragen können wir beantworten?
+
+#### In der Psychologie
+
+::: incremental
+-   Wie wirken unterschiedliche Beleuchtungen auf unsere Stimmung?
+
+-   Unterscheiden sich Psychologinnen von anderen Disziplinen?
+
+-   Wie wirken unterschiedliche LVs auf Studierende?
+
+-   ...
+:::
+
+## einfaktorielle ANOVA
+
+### Vorgehensweise
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+Hat die Social-Media-Plattformen einen Einfluss auf die Wahrnehmung des Inhalts?
+
+<br> <br>
+
+::: columns
+::: {.column width="33%"}
+![](https://cdn.pixabay.com/photo/2021/01/30/06/42/tiktok-5962992_960_720.png){height="8cm"}
+:::
+
+::: {.column width="33%"}
+![](https://www.pngplay.com/wp-content/uploads/12/Twitch-Logo-PNG-Free-File-Download.png){height="8cm"}
+:::
+
+::: {.column width="33%"}
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png){height="8cm"}
+:::
+:::
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+Hat die Social-Media-Plattformen einen Einfluss auf die Wahrnehmung des Inhalts?
+
+Warum nicht mehrere *t*-Tests für unabhängige Stichproben?
+
+-   Anzahl der durchzuführenden *t*-Tests steigt mit den *k* Ausprägungen
+
+$$
+\begin{aligned}
+\ j &= \frac{k \cdot (k - 1)}{2} \\
+\\
+\ j &= \frac{3 \cdot (3 - 1)}{2} \\
+\ j &= 3 \\
+\end{aligned}
+$$
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+Hat die Social-Media-Plattformen einen Einfluss auf die Wahrnehmung des Inhalts?
+
+Warum nicht mehrere *t*-Tests für unabhängige Stichproben?
+
+-   Mit der Anzahl der durchzuführenden *t*-Tests steigt steigt der ⍺-Fehler
+
+$$
+\begin{aligned}
+\ \alpha_{kum} &= 1 - (1 - \alpha)^j \\
+\\
+\ \alpha_{kum} &= 1 - (1 - .05)^3 \\
+\ \alpha_{kum} &= .1426 \\
+\ \alpha_{kum} &= 14.26 \% \\
+\end{aligned}
+$$
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+Informationen zum Datensatz `ae_anova_one_way.csv`
+
+-   demographische Daten (id, age & gen: 0 = weiblich, 1 = männlich)
+-   Social-Media-Plattform (smp: 0 = "TikTok", 1 = "Twitch", 2 = "Instagram")
+-   Bewertung der Inhalte über drei Items (0 = trifft nicht zu, 7 = trifft voll zu)
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style A fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Daten einlesen
+
+```{r}
+#| echo: false
+
+# I need this path, because my set-up looks like this
+# The generic part for students can be found below
+ds <- read.csv(here::here("data/ae_anova_one_way.csv"),
+               header = TRUE)
+
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
+ds <- read.csv(here::here("ae_anova_one_way.csv"),
+               header = TRUE)
+
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style B fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Übersicht verschaffen
+
+<br> <br>
+
+```{r}
+#| echo: false
+
+ds |> 
+  head() |> 
+  knitr::kable()
+
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style C fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Namen brauchbar machen
+
+-   händisch mit der `rename()-Funktion` aus dem `tidyverse-Package`
+
+```{r}
+#| eval: false
+#| echo: true
+ds |> 
+  rename(bew_01 = Bew.01,
+         bew_02 = bew_02,
+         bew_03 = BEW.03)
+```
+
+-   "bequemer" mit der `clean_names()-Funktion` aus dem `janitor-Package`
+
+```{r}
+#| echo: true
+ds <- ds |> 
+  janitor::clean_names()
+
+
+```
+
+```{r}
+#| echo: false
+
+ds |> 
+  head(2) |> 
+  knitr::kable()
+
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style D fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Ergeben die Daten Sinn?
+
+```{r}
+#| eval: false
+#| echo: true 
+summary(ds)
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style E fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+-   Gender-Variable als Faktor-Variable
+
+```{r}
+#| echo: true
+#| output: false
+ds$gen_f <- factor(ds$gen,
+                   levels = c(0, 1),
+                   labels = c("w", "m"))
+```
+
+-   Social-Media-Variable als Faktor-Variable
+
+```{r}
+#| echo: true
+#| output: false
+ds$smp_f <- factor(ds$smp,
+                   levels = c(0, 1, 2),
+                   labels = c("Tik_Tok", "Twitch", "Insta"))
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+-   Funktioniert unsere AV?
+
+```{r}
+#| echo: true
+#| output: false
+ds |> 
+  select(starts_with("bew")) |> 
+  psych::alpha()
+
+# Oder wir erstellen ein neues Objekt
+
+ca <- ds |> 
+  select(c("bew_01", "bew_02", "bew_03"))
+
+psych::alpha(ca)
+
+
+
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+-   Funktioniert unsere AV? ➜ Wie gut ist das *Cronbach's*-⍺?
+
+```{r}
+dc <- psych::alpha(ca)
+
+dc
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### Skalenwerte berechnen
+
+Wie wird der Inhalt bewertet?
+
+```{r}
+#| echo: true
+#| output: false
+ds <- ds |> 
+  rowwise() |> # führt dazu, dass die folgenden Funktionen zeilenweise ausgeführt werden
+  mutate(bw_mean = mean(c(bew_01, bew_02, bew_03),
+                        na.rm = TRUE))  
+
+# Alternative mit "rowMeans()"
+
+ds$bw_mean <- rowMeans(ds[c("bew_01", "bew_02", "bew_03")],
+                       na.rm = TRUE)
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style F fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+#### einfaktorielle ANOVA berechnen
+
+Voraussetzungen
+
+-   Skalenniveau
+-   Unabhängigkeit der Messungen
+-   *Varianzhomogenität*
+-   *Normalverteilung*
+
+
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*Voraussetzungen - Varianzhomogenität*
+
+```{r}
+car::leveneTest(bw_mean ~ smp_f,
+                data = ds)
+```
+
+<br> <br>
+
+::: fragment
+Die Varianzhomogenität ist verletzt ➜ Was nun?
+:::
+
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*Voraussetzungen - Normalverteilung*
+
+<br> <br>
+
+```{r}
+#| fig-width: 75
+#| fig-height: 45
+
+ds |> 
+  ggplot(aes(x = bw_mean)) +
+  geom_histogram(binwidth = 0.5) +
+  facet_wrap(~ smp_f)
+
+
+```
+
+
+::: fragment
+::: callout-important
+## Achtung
+
+Die Daten in den einzelnen Bedingungen müssen normalverteilt sein!<br>
+Es muss keine Normalverteilung über die gesamten Daten vorliegen!
+
+:::
+::: 
+
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+Wir rechnen trotzdem, da die ANOVA robust ist, vor allem bei großen Stichproben!
+
+*ANOVA*
+
+Hierfür nutzen wir die `Anova()-Funktion`aus dem `car-Package`
+
+```{r}
+#| echo: true
+# Wir müssen zunächst ein Regressionsobjekt erstellen
+mod_anova <- lm(bw_mean ~ smp_f,
+                data = ds)
+
+## Wir brauchen Typ III Sum of Squares 
+mod_III <- car::Anova(mod = mod_anova,
+                      type = 3)
+
+```
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*ANOVA*
+
+```{r}
+mod_III 
+```
+
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*Effektstärke*
+
+```{r}
+#| echo: true
+#| results: false
+effectsize::eta_squared(mod_III)
+```
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*Effektstärke*
+
+```{r}
+effectsize::eta_squared(mod_III)
+```
+
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*post-hoc-Tests*
+
+- Bonferroni-Korrektur
+- Bonferroni-Holms
+- Sidak
+- Scheffe
+- R-E-G-W F
+- R-E-G-W Q
+- Tukey (HSD)
+- ...
+
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*post-hoc-Test - Tukey-HSD-Test*
+
+Hierfür nutzen wir die `emmeans()-Funktion`aus dem `emmeans-Package`
+
+```{r}
+#| echo: true
+#| results: false
+
+# Wir erstellen zunächst ein neues Objekt namens "post" für post-hoc-Test
+post <- emmeans::emmeans(mod_anova, # Das "mod_anova"-Objekt haben wir bereits erstellt
+                            ~ smp_f) # Hier müssen wir nochmals spezifizieren, welche Ausprägungen miteinander verglichen werden sollen ... warum auch immer
+
+pairs(post, adjust = "tukey" )
+```
+
+## einfaktorielle ANOVA
+### Beispiel
+#### einfaktorielle ANOVA berechnen
+
+*post-hoc-Test - Tukey-HSD-Test*
+
+```{r}
+
+
+post <- emmeans::emmeans(mod_anova, 
+                            ~ smp_f) 
+
+pairs(post, adjust = "tukey" )
+```
+
+
+## einfaktorielle ANOVA
+
+### Beispiel
+
+```{mermaid}
+%%| fig-align: center
+%%| fig-valign: center
+flowchart TB
+
+A(Daten einlesen) --> 
+B(Übersicht verschaffen) --> 
+C(Namen brauchbar machen) --> 
+D(Ergeben die Daten Sinn?) --> 
+E(Skalenwerte berechnen) --> 
+F(einfaktorielle ANOVA) --> 
+G(Ergebnis berichten)
+
+style G fill: #009e73
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+### Ergebnis berichten
+
+*Deskriptiven Daten*
+
+```{r}
+#| echo: true
+#| results: false
+ds |> 
+  group_by(smp_f) |> 
+  summarize(Mittelwert = mean(bw_mean,
+                              na.rm = TRUE),
+            Standardabweichung = sd(bw_mean,
+                              na.rm = TRUE))
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+### Ergebnis berichten
+
+*Deskriptiven Daten*
+
+```{r}
+ds |> 
+  group_by(smp_f) |> 
+  summarize(Mittelwert = mean(bw_mean,
+                              na.rm = TRUE),
+            Standardabweichung = sd(bw_mean,
+                              na.rm = TRUE)) |> 
+  knitr::kable()
+```
+
+
+## einfaktorielle ANOVA
+
+### Beispiel
+### Ergebnis berichten
+
+*APA-konform*
+<br> <br>
+
+"Eine einfaktorielle ANOVA wurde durchgeführt um zu testen, ob die Wahl der Social-Media-Plattform eine Auswikrung auf die Wahrnehmung des Inhalts hat. Die Ergebnisse zeigen, dass die Social-Media-Plattform eine Auswikrung auf die Wahrnehmung des Inhalts hat, *F*(2, 343) = 26.95, *p* < .001, *η²* = 0.14, 95% CI [0.08, 1.00]. <br>
+Der Tukey post-hoc Test zeigte einen signifikanten Unterschied zwischen Tik-Tok (*M* = 4.98, *SD* = 1.35) und Twitch (*M* = 6.02, *SD* = 1.02), *p* < .001. Zusätzlich zeigtes sich ein signifikanter Unterschied zwischen Tik-Tok und Instagram (*M* = 5.84, *SD* = 1.05), *p* < .001. Der Unterschied zwischen Twitch und Instagram war nich signifikant, *p* = 474."
+
+
+## einfaktorielle ANOVA
+
+### Beispiel
+### Ergebnis berichten
+
+*Balkendiagram*
+
+```{r}
+
+# Welche Farbe hätte ich denn gerne``
+mf <- c("#00AFBB", "#E7B800", "#FC4E07")
+
+# Erstellen des Plots
+ds |> 
+  ggplot(aes(x = smp_f,
+             y = bw_mean,
+             fill = smp_f)) +
+  stat_summary(fun = "mean" ,         # "stat_summary" - erledig die Arbeit für uns - Mittelwert zu plotten
+               geom = "bar",          # Wir hätten gerne Balken
+               show.legend = FALSE) + # Wir brauchen keine Legende
+  scale_y_continuous(limits = c(0, 7),
+                     breaks = c(0:7)) +
+  scale_fill_manual(values = mf) +
+  labs(x = "",
+       y = "Bewertung") +
+  theme_classic()
+  
+```
+
+## einfaktorielle ANOVA
+
+### Beispiel
+### Ergebnis berichten
+
+*Balkendiagram*
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Welche Farbe hätte ich denn gerne``
+mf <- c("#00AFBB", "#E7B800", "#FC4E07")
+
+# Erstellen des Plots
+ds |> 
+  ggplot(aes(x = smp_f,
+             y = bw_mean,
+             fill = smp_f)) +
+  stat_summary(fun = "mean" ,         # "stat_summary" - erledig die Arbeit für uns - Mittelwert zu plotten
+               geom = "bar",          # Wir hätten gerne Balken
+               show.legend = FALSE) + # Wir brauchen keine Legende
+  scale_y_continuous(limits = c(0, 7),
+                     breaks = c(0:7)) +
+  scale_fill_manual(values = mf) +
+  labs(x = "",
+       y = "Bewertung") +
+  theme_classic()
+  
+```
+
+
+## einfaktorielle ANOVA
+
+### Beispiel
+#### Ergebnis berichten
+
+*Violinplot*
+
+
+```{r}
+# Erstellen des Plots
+ds |> 
+  ggplot(aes(x = smp_f,
+             y = bw_mean,
+             fill = smp_f)) +
+  geom_violin(show.legend = FALSE) +
+  geom_jitter(alpha = 0.5,
+              width = 0.15,
+              show.legend = FALSE) +
+  scale_y_continuous(limits = c(0, 7),
+                     breaks = c(0:7)) +
+  scale_fill_manual(values = mf) +
+  labs(x = "",
+       y = "Bewertung") +
+  theme_classic()
+  
+```
+
+## einfaktorielle ANOVA
+
+### Übung
+
+<br> <br> <br>
+
+Durchlaufen Sie sämtliche Schritte mit dem Alter der Versuchspersonen als AV!

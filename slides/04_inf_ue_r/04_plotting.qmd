@@ -424,9 +424,9 @@ ggplot2::theme_set(theme_grey())
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben)
+ggplot(ds, 
+       aes(x = Alter,
+           y = Ausgaben))
 ```
 
 
@@ -436,9 +436,9 @@ ggplot(ds) +
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben) +
+ggplot(ds, 
+        aes(x = Alter,
+            y = Ausgaben)) +
   geom_point()
 ```
 
@@ -449,10 +449,10 @@ ggplot(ds) +
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben,
-      color = Land) +
+ggplot(ds, 
+        aes(x = Alter,
+            y = Ausgaben,
+            color = Land)) +
   geom_point() 
 ```
 
@@ -465,10 +465,10 @@ Unser erster Plot
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben,
-      color = Land) +
+ggplot(ds, 
+        aes(x = Alter,
+            y = Ausgaben,
+            color = Land))  +
   geom_point() +
   geom_line(aes(group = Land))
 ```
@@ -481,10 +481,10 @@ ggplot(ds) +
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben,
-      color = Land) +
+ggplot(ds, 
+       aes(x = Alter,
+           y = Ausgaben,
+           color = Land))  +
   geom_point() +
   geom_line(aes(group = Land)) +
   facet_wrap(~ Land)
@@ -499,10 +499,10 @@ ggplot(ds) +
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben,
-      color = Land) +
+ggplot(ds, 
+        aes(x = Alter,
+            y = Ausgaben,
+            color = Land))  +
   geom_point() +
   geom_line(aes(group = Land)) +
   coord_flip()
@@ -516,10 +516,10 @@ Geht das auch in schön(er)?
 
 ```{r}
 #| echo: true
-ggplot(ds) +
-  aes(x = Alter,
-      y = Ausgaben,
-      color = Land) +
+ggplot(ds, 
+        aes(x = Alter,
+            y = Ausgaben,
+            color = Land))  +
   geom_point() +
   geom_line(aes(group = Land)) +
   theme_bw()
@@ -607,7 +607,7 @@ Lösung
 ```{r}
 #| eval: false
 #| echo: true
-#| code-fold: true
+
 gapminder |> 
   filter(country == c("Afghanistan", "Albania")) |> 
   ggplot(aes(x = year,
