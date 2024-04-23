@@ -1,0 +1,23 @@
+---
+title: "02 - Hypothesen"
+subtitle: "Inferenzstatistik und Multivariate Verfahren"
+author: "Prof. Dr. David F. Urschler"
+format: 
+  revealjs:
+    slide-number: true
+    smaller: true
+    show-notes: false
+    embed-resources: true
+    theme: simple
+execute: 
+  warning: false
+---
+
+```{r setup}
+library(here)
+library(tidyverse)
+
+```
+
+## Quarto
+
